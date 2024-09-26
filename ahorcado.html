@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Ahorcado - Valores del evangelio</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #word {
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+        }
+
+        #guesses {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        #message {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        #alphabet {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 100%;
+        }
+
+        button {
+            background-color: #ffffff;
+            border: 2px solid #333;
+            color: #333;
+            margin: 3px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #hangman {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stage {
+            width: 100px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        .post {
+            width: 6px;
+            height: 120px;
+            background-color: #333;
+            position: absolute;
+            left: 15px;
+            bottom: 0;
+        }
+
+        .horizontal-post {
+            width: 70px;
+            height: 6px;
+            background-color: #333;
+            position: absolute;
+            left: 15px;
+            top: 0;
+        }
+
+        .rope {
+            width: 2px;
+            height: 30px;
+            background-color: #333;
+            position: absolute;
+            top: 6px;
+            left: 70px;
+        }
+
+        .head {
+            width: 25px;
+            height: 25px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 30px;
+            left: 57px;
+        }
+
+        .body {
+            width: 2px;
+            height: 35px;
+            background-color: #333;
+            position: absolute;
+            top: 55px;
+            left: 70px;
+        }
+
+        .arm-left,
+        .arm-right {
+            width: 18px;
+            height: 2px;
+            background-color: #333;
+            position: absolute;
+            top: 70px;
+        }
+
+        .arm-left {
+            left: 52px;
+            transform: rotate(-45deg);
+        }
+
+        .arm-right {
+            left: 70px;
+            transform: rotate(45deg);
+        }
+
+        .leg-left,
+        .leg-right {
+            width: 18px;
+            height: 2px;
+            background-color: #333;
+            position: absolute;
+            top: 90px;
+        }
+
+        .leg-left {
+            left: 52px;
+            transform: rotate(-45deg);
+        }
+
+        .leg-right {
+            left: 70px;
+            transform: rotate(45deg);
+        }
+
+        #action-buttons {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            font-size: 1rem;
+            border: 2px solid #333;
+            margin: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Media Queries */
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            #word {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
+
+            #guesses,
+            #message {
+                font-size: 0.9rem;
+            }
+
+            button {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+                margin: 2px;
+            }
+
+            .stage {
+                width: 80px;
+                height: 120px;
+            }
+
+            .post {
+                width: 5px;
+                height: 100px;
+                left: 12px;
+            }
+
+            .horizontal-post {
+                width: 60px;
+                height: 5px;
+                left: 12px;
+            }
+
+            .rope {
+                height: 25px;
+                left: 60px;
+            }
+
+            .head {
+                width: 20px;
+                height: 20px;
+                top: 25px;
+                left: 50px;
+            }
+
+            .body {
+                height: 30px;
+                top: 45px;
+                left: 60px;
+            }
+
+            .arm-left,
+            .arm-right,
+            .leg-left,
+            .leg-right {
+                width: 15px;
+            }
+
+            .arm-left,
+            .arm-right {
+                top: 60px;
+            }
+
+            .arm-left {
+                left: 45px;
+            }
+
+            .arm-right {
+                left: 60px;
+            }
+
+            .leg-left,
+            .leg-right {
+                top: 75px;
+            }
+
+            .leg-left {
+                left: 45px;
+            }
+
+            .leg-right {
+                left: 60px;
+            }
+
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+                margin: 6px;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            #word {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            #guesses,
+            #message {
+                font-size: 0.8rem;
+            }
+
+            button {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+                margin: 1px;
+            }
+
+            .stage {
+                width: 70px;
+                height: 100px;
+            }
+
+            .post {
+                width: 4px;
+                height: 80px;
+                left: 10px;
+            }
+
+            .horizontal-post {
+                width: 50px;
+                height: 4px;
+                left: 10px;
+            }
+
+            .rope {
+                height: 20px;
+                left: 50px;
+            }
+
+            .head {
+                width: 18px;
+                height: 18px;
+                top: 20px;
+                left: 42px;
+            }
+
+            .body {
+                height: 25px;
+                top: 38px;
+                left: 50px;
+            }
+
+            .arm-left,
+            .arm-right,
+            .leg-left,
+            .leg-right {
+                width: 12px;
+            }
+
+            .arm-left,
+            .arm-right {
+                top: 50px;
+            }
+
+            .arm-left {
+                left: 38px;
+            }
+
+            .arm-right {
+                left: 50px;
+            }
+
+            .leg-left,
+            .leg-right {
+                top: 65px;
+            }
+
+            .leg-left {
+                left: 38px;
+            }
+
+            .leg-right {
+                left: 50px;
+            }
+
+            .action-btn {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ahorcado - Valores del evangelio</h1>
+    <div id="hangman">
+        <div class="stage">
+            <div class="post"></div>
+            <div class="horizontal-post"></div>
+            <div class="rope"></div>
+            <div class="head" style="display: none;"></div>
+            <div class="body" style="display: none;"></div>
+            <div class="arm-left" style="display: none;"></div>
+            <div class="arm-right" style="display: none;"></div>
+            <div class="leg-left" style="display: none;"></div>
+            <div class="leg-right" style="display: none;"></div>
+        </div>
+    </div>
+    <div id="word"></div>
+    <div id="guesses">Intentos restantes: 6</div>
+    <div id="message"></div>
+    <div id="alphabet"></div>
+
+    <!-- Botones de acción (seguir jugando o regresar al índice) -->
+    <div id="action-buttons">
+        <button class="action-btn" onclick="resetGame()">Seguir Jugando</button>
+        <button class="action-btn" onclick="window.location.href='index.html'">Regresar al Índice</button>
+    </div>
+
+    <script>
+        const words = [
+            { word: 'COMPASION', hint: 'Una virtud de cuidar y comprender a los demás.' },
+            { word: 'HONESTIDAD', hint: 'La verdad siempre es el mejor camino.' },
+            { word: 'GENEROSIDAD', hint: 'Dar sin esperar nada a cambio.' },
+            { word: 'PAZ', hint: 'El estado de tranquilidad y armonía.' }
+        ];
+
+        let selectedWord = '';
+        let hint = '';
+        let guessedLetters = [];
+        let remainingGuesses = 6;
+
+        function selectWord() {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            selectedWord = words[randomIndex].word;
+            hint = words[randomIndex].hint;
+        }
+
+        function displayWord() {
+            let display = '';
+            for (let letter of selectedWord) {
+                if (guessedLetters.includes(letter)) {
+                    display += letter;
+                } else {
+                    display += '_';
+                }
+                display += ' ';
+            }
+            document.getElementById('word').textContent = display;
+        }
+
+        function displayHangman() {
+            const hangmanParts = ['head', 'body', 'arm-left', 'arm-right', 'leg-left', 'leg-right'];
+            for (let i = 0; i < 6 - remainingGuesses; i++) {
+                document.querySelector(`.${hangmanParts[i]}`).style.display = 'block';
+            }
+        }
+
+        function displayGuesses() {
+            document.getElementById('guesses').textContent = `Intentos restantes: ${remainingGuesses}`;
+        }
+
+        function displayHint() {
+            document.getElementById('message').textContent = `Pista: ${hint}`;
+        }
+
+        function createAlphabet() {
+            const alphabet = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+            const alphabetContainer = document.getElementById('alphabet');
+            alphabetContainer.innerHTML = ''; // Clear existing buttons
+            for (let letter of alphabet) {
+                const button = document.createElement('button');
+                button.textContent = letter;
+                button.addEventListener('click', () => guessLetter(letter));
+                alphabetContainer.appendChild(button);
+            }
+        }
+
+        function guessLetter(letter) {
+            if (!guessedLetters.includes(letter)) {
+                guessedLetters.push(letter);
+                if (!selectedWord.includes(letter)) {
+                    remainingGuesses--;
+                }
+                updateGame();
+            }
+        }
+
+        function updateGame() {
+            displayWord();
+            displayHangman();
+            displayGuesses();
+            checkGameEnd();
+        }
+
+        function checkGameEnd() {
+            const messageElement = document.getElementById('message');
+            const actionButtons = document.getElementById('action-buttons');
+
+            if (remainingGuesses === 0) {
+                messageElement.textContent = `¡Perdiste! La palabra era: ${selectedWord}`;
+                actionButtons.style.display = 'block';
+            } else if (!document.getElementById('word').textContent.includes('_')) {
+                messageElement.textContent = '¡Ganaste! Has adivinado la palabra correctamente.';
+                actionButtons.style.display = 'block';
+            }
+        }
+
+        function resetGame() {
+            remainingGuesses = 6;
+            guessedLetters = [];
+            document.querySelectorAll('.stage div').forEach(part => part.style.display = 'none');
+            document.getElementById('message').textContent = '';
+            document.getElementById('action-buttons').style.display = 'none';
+            startGame();
+        }
+
+        function startGame() {
+            selectWord();
+            displayHint();
+            displayWord();
+            displayGuesses();
+            createAlphabet();
+        }
+
+        window.onload = startGame;
+    </script>
+</body>
+
+</html>

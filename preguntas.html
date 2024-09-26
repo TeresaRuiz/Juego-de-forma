@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Juego de Preguntas - Valores del Evangelio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        h1 {
+            color: #000000;
+            font-size: clamp(1.5em, 5vw, 2.5em);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #quiz-container {
+            max-width: 600px;
+            width: 90%;
+            background-color: rgba(255, 153, 153, 0.5);
+            padding: 5%;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        #quiz-container div {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4A6FA5;
+            color: #ffffff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: clamp(14px, 3vw, 16px);
+            margin-top: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button:hover {
+            background-color: #4A6FA5;
+            transform: scale(1.05);
+        }
+
+        #options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px auto;
+            background-color: #FAF9F6;
+            color: #000;
+            border: 2px solid #4A6FA5;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #options button:hover {
+            background-color: #d9d9d9;
+            transform: scale(1.02);
+        }
+
+        #options button.selected {
+            background-color: #D14D72;
+            color: #ffffff;
+        }
+
+        #result {
+            font-size: clamp(1em, 3vw, 1.2em);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #intro-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('fondo.png'); 
+            color: #34495E;
+            font-size: clamp(1.5em, 5vw, 3em);
+            transition: opacity 0.5s ease-in-out;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .menu-button {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #4A6FA5;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: clamp(14px, 3vw, 16px);
+            transition: background-color 0.3s, transform 0.3s;
+            max-width: 200px;
+            width: 90%;
+        }
+
+        .menu-button:hover {
+            background-color: #4A6FA5;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            #quiz-container {
+                padding: 15px;
+            }
+
+            button {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Juego de preguntas - Valores del evangelio</h1>
+    <div id="intro-screen">Pregunta 1</div>
+
+    <div id="quiz-container">
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="submit">Enviar respuesta</button>
+        <div id="result"></div>
+        <a href="index.html" class="menu-button">Regresar al menú</a>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Qué valor del evangelio nos enseña a ayudar a los necesitados?",
+                options: ["Compasión", "Honestidad", "Generosidad", "Paz"],
+                answer: 0
+            },
+            {
+                question: "¿Qué valor nos anima a decir siempre la verdad?",
+                options: ["Compasión", "Honestidad", "Generosidad", "Paz"],
+                answer: 1
+            },
+            {
+                question: "¿Qué valor nos motiva a compartir lo que tenemos con los demás?",
+                options: ["Compasión", "Honestidad", "Generosidad", "Paz"],
+                answer: 2
+            },
+            {
+                question: "¿Qué valor promueve la armonía y la tranquilidad en nuestras relaciones?",
+                options: ["Compasión", "Honestidad", "Generosidad", "Paz"],
+                answer: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showIntroScreen() {
+            const introScreen = document.getElementById('intro-screen');
+            const quizContainer = document.getElementById('quiz-container');
+            introScreen.textContent = `Pregunta ${currentQuestion + 1}`;
+            introScreen.style.display = 'flex';
+            quizContainer.style.display = 'none';
+
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                quizContainer.style.display = 'block';
+                loadQuestion();
+            }, 2000);
+        }
+
+        function loadQuestion() {
+            const questionEl = document.getElementById('question');
+            const optionsEl = document.getElementById('options');
+            const currentQ = questions[currentQuestion];
+
+            questionEl.textContent = currentQ.question;
+            optionsEl.innerHTML = '';
+
+            for (let i = 0; i < currentQ.options.length; i++) {
+                const option = document.createElement('button');
+                option.textContent = currentQ.options[i];
+                option.onclick = () => selectOption(i);
+                optionsEl.appendChild(option);
+            }
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll('#options button');
+            options.forEach(option => option.classList.remove('selected'));
+            options[index].classList.add('selected');
+        }
+
+        function submitAnswer() {
+            const selected = document.querySelector('#options button.selected');
+            if (!selected) return;
+
+            const answerIndex = Array.from(selected.parentNode.children).indexOf(selected);
+            if (answerIndex === questions[currentQuestion].answer) {
+                score++;
+                document.getElementById('result').textContent = '¡Correcto!';
+            } else {
+                document.getElementById('result').textContent = 'Incorrecto. La respuesta correcta era: ' + questions[currentQuestion].options[questions[currentQuestion].answer];
+            }
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                setTimeout(() => {
+                    document.getElementById('result').textContent = '';
+                    showIntroScreen();
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('quiz-container').innerHTML = `
+                        <h2>Juego terminado</h2>
+                        <p>Tu puntuación: ${score} de ${questions.length}</p>
+                        <button onclick="location.reload()">Jugar de nuevo</button>
+                        <a href="index.html" class="menu-button">Regresar al Menú</a>
+                    `;
+                }, 2000);
+            }
+        }
+
+        document.getElementById('submit').addEventListener('click', submitAnswer);
+        showIntroScreen();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Juego de Valores del Evangelio</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        h1 {
+            color: #000000;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            /* Permite que los elementos se ajusten en pantallas pequeñas */
+        }
+
+        .menu a {
+            display: flex;
+            /* Cambiado a flex para alinear el ícono y el texto */
+            align-items: center;
+            /* Centra verticalmente el ícono y el texto */
+            background-color: #4A6FA5;
+            color: #ffffff;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .menu a:hover {
+            background-color: #3b5b8a;
+            /* Color de fondo en hover */
+            transform: scale(1.05);
+        }
+
+        .icono {
+            margin-right: 10px;
+            /* Espacio entre el ícono y el texto */
+        }
+
+        .imagen-final {
+            display: block;
+            /* Hace que la imagen sea un bloque */
+            margin: 40px auto;
+            /* Centra la imagen horizontalmente y añade margen superior e inferior */
+            max-width: 100%;
+            /* Asegura que la imagen no exceda el ancho del contenedor */
+            height: auto;
+            /* Mantiene la proporción de la imagen */
+        }
+
+        /* Estilos para el ícono de información */
+        .info-icon {
+            position: fixed;
+            /* Fija el ícono en la esquina */
+            bottom: 20px;
+            /* Distancia desde la parte inferior */
+            right: 20px;
+            /* Distancia desde la derecha */
+            background-color: #4A6FA5;
+            /* Color de fondo del ícono */
+            color: white;
+            /* Color del ícono */
+            padding: 10px;
+            /* Espaciado interno */
+            border-radius: 50%;
+            /* Hace que el ícono sea redondo */
+            cursor: pointer;
+            /* Cambia el cursor al pasar sobre él */
+            font-size: 1.5em;
+            /* Tamaño del ícono */
+        }
+
+        /* Estilo para el tooltip (nombre) */
+        .tooltip {
+            display: none;
+            /* Oculta por defecto */
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            /* Tamaño del texto del tooltip */
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+                /* Reduce el tamaño del título en pantallas pequeñas */
+            }
+
+            p {
+                font-size: 1em;
+                /* Reduce el tamaño del texto en pantallas pequeñas */
+            }
+
+            .menu a {
+                padding: 10px;
+                /* Reduce el espaciado interno en pantallas pequeñas */
+                font-size: 0.9em;
+                /* Reduce el tamaño del texto en pantallas pequeñas */
+            }
+
+            .info-icon {
+                font-size: 1.2em;
+                /* Ajusta el tamaño del ícono en pantallas pequeñas */
+            }
+
+            .tooltip {
+                font-size: 0.8em;
+                /* Ajusta el tamaño del texto del tooltip en pantallas pequeñas */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Juego de Valores del Evangelio</h1>
+    <p>Aprende sobre compasión, honestidad, generosidad y paz a través de juegos divertidos.</p>
+    <div class="menu">
+        <a href="preguntas.html"><span class="icono">❓</span>Juego de preguntas</a>
+        <a href="sopa-letras.html"><span class="icono">🔤</span>Sopa de letras</a>
+        <a href="ahorcado.html"><span class="icono">🔒</span>Ahorcado</a>
+    </div>
+
+    <!-- Imagen añadida al final -->
+    <img src="capibara.png" alt="Capibara capibara" class="imagen-final">
+
+    <!-- Icono de información -->
+    <div class="info-icon" onclick="toggleTooltip()">ℹ️</div>
+    <div class="tooltip" id="tooltip">Información sobre el juego <br>
+        Nombre: Juego de valores <br>
+        Sección: B2 <br>
+        Integrantes: Teresa Ruiz, Paola Martinez, <br>
+        Ricardo Pérez y Gerardo Tamayo</div>
+
+    <script>
+        function toggleTooltip() {
+            const tooltip = document.getElementById('tooltip');
+
+            // Alternar visibilidad del tooltip
+            if (tooltip.style.display === 'none' || tooltip.style.display === '') {
+                tooltip.style.display = 'block';
+                setTimeout(() => { tooltip.style.display = 'none'; }, 2000); // Ocultar después de 2 segundos
+            }
+        }
+    </script>
+</body>
+
+</html>

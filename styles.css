@@ -1,0 +1,17 @@
+body {
+    margin: 0; /* Elimina el margen por defecto */
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    background-image: url('fondo.png'); /* Reemplaza con la ruta de tu imagen */
+    background-size: cover; /* Escala la imagen para que cubra toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que se repita la imagen */
+}
+
+.container {
+    display: flex;
+    justify-content: center; /* Centra contenido horizontalmente */
+    align-items: center; /* Centra contenido verticalmente */
+    height: 100%; /* Ocupa toda la altura del contenedor */
+    color: white; /* Color del texto */
+    text-align: center; /* Alinea el texto al centro */
+}
